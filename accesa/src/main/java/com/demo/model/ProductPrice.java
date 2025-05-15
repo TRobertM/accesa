@@ -21,4 +21,15 @@ public class ProductPrice {
     private Double price;
     private String currency;
     private LocalDate date;
+
+    public ProductPrice() {
+    }
+
+    public ProductPrice(Product product, Store store, Double price, String currency, LocalDate date) {
+        this.product = product;
+        this.store = store;
+        this.price = price;
+        this.currency = currency;
+        this.date = date;
+    }
 }
