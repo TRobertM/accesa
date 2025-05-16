@@ -17,9 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class CsvParser implements CommandLineRunner {
@@ -32,7 +30,7 @@ public class CsvParser implements CommandLineRunner {
     );
     private final List<String> discount_files = List.of(
             "discounts/kaufland_2025-05-01.csv", "discounts/kaufland_2025-05-08.csv",
-            "discounts/lidl_2025-05-01.csv", "discounts/lidl_2025-05-01.csv",
+            "discounts/lidl_2025-05-01.csv", "discounts/lidl_2025-05-08.csv",
             "discounts/profi_2025-05-01.csv", "discounts/profi_2025-05-08.csv"
     );
     private final String DELIMITER = ";";
@@ -58,16 +56,24 @@ public class CsvParser implements CommandLineRunner {
     }
 
     public void parseDiscounts(List<String> files) throws Exception{
-        List<List<String>> records = new ArrayList<>();
         for (String file : files) {
             String store_name = getStoreName(file);
-            extract(records, file);
-            addDiscounts(store_name, records);
-            records.clear();
+            Map<String, List<String>> uniqueRecords = new LinkedHashMap<>();
+            try (InputStream is = getClass().getClassLoader().getResourceAsStream(file);
+                BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                br.readLine();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] data = line.split(DELIMITER);
+                    String productId = data[0];
+                    uniqueRecords.putIfAbsent(productId, Arrays.asList(data));
+                }
+            }
+            addDiscounts(store_name, new ArrayList<>(uniqueRecords.values()));
         }
     }
 
-    public void parsePrices(List<String> files) throws Exception{
+    public void parsePrices(List<String> files) throws Exception {
         List<List<String>> records = new ArrayList<>();
         for (String file : files) {
             String store_name = getStoreName(file);
@@ -111,14 +117,31 @@ public class CsvParser implements CommandLineRunner {
     private void addDiscounts(String storeName, List<List<String>> records) {
         Store store = storeRepository.findByName(storeName);
         for (List<String> record : records) {
-            Product product = productRepository.findById(record.get(0));
-            store.getDiscounts().add(new ProductDiscount(
-                    product,
-                    store,
-                    Integer.parseInt(record.get(8)),
-                    LocalDate.parse(record.get(6)),
-                    LocalDate.parse(record.get(7))
-            ));
+            String productId = record.get(0);
+            Product product = productRepository.findById(productId);
+            if (product == null) {
+                continue;
+            }
+            LocalDate startDate = LocalDate.parse(record.get(6));
+            LocalDate endDate = LocalDate.parse(record.get(7));
+            int discountPercentage = Integer.parseInt(record.get(8));
+            Optional<ProductDiscount> existingDiscount = store.getDiscounts().stream()
+                            .filter(discount -> discount.getProduct().getId().equals(productId))
+                            .findFirst();
+            if (existingDiscount.isPresent()) {
+                ProductDiscount newDiscount = existingDiscount.get();
+                newDiscount.setStartDate(startDate);
+                newDiscount.setEndDate(endDate);
+                newDiscount.setDiscount(discountPercentage);
+            } else {
+                store.getDiscounts().add(new ProductDiscount(
+                        product,
+                        store,
+                        discountPercentage,
+                        startDate,
+                        endDate
+                ));
+            }
         }
         storeRepository.save(store);
     }
