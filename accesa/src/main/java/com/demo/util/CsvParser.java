@@ -1,11 +1,11 @@
 package com.demo.util;
 
-import com.demo.model.Product;
-import com.demo.model.ProductDiscount;
-import com.demo.model.ProductPrice;
-import com.demo.model.Store;
+import com.demo.dto.UsernamePasswordDTO;
+import com.demo.model.*;
 import com.demo.repository.ProductRepository;
 import com.demo.repository.StoreRepository;
+import com.demo.repository.UserRepository;
+import com.demo.service.implementations.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -34,11 +34,15 @@ public class CsvParser implements CommandLineRunner {
             "discounts/profi_2025-05-01.csv", "discounts/profi_2025-05-08.csv"
     );
     private final String DELIMITER = ";";
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CsvParser(StoreRepository storeRepository, ProductRepository productRepository) {
+    public CsvParser(StoreRepository storeRepository, ProductRepository productRepository, UserService userService, UserRepository userRepository) {
         this.storeRepository = storeRepository;
         this.productRepository = productRepository;
+        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -47,6 +51,15 @@ public class CsvParser implements CommandLineRunner {
         addStores();
         parsePrices(price_files);
         parseDiscounts(discount_files);
+        List<Product> products = productRepository.findTop10ByOrderByIdAsc();
+        userService.registerUser(new UsernamePasswordDTO("User1", "password1"));
+        Optional<User> user = userRepository.findByUsername("User1");
+        if (user.isPresent()) {
+            for (Product product : products) {
+                BasketItem bi = new BasketItem(product, 2);
+                user.get().getBasket().addItem(bi);
+            }
+        }
     }
 
     private void addStores() {
@@ -102,14 +115,17 @@ public class CsvParser implements CommandLineRunner {
     private void addPrices(String storeName, List<List<String>> records, LocalDate price_date) {
         Store store = storeRepository.findByName(storeName);
         for (List<String> record : records) {
-            Product product = productRepository.findById(record.get(0));
-            store.getPrices().add(new ProductPrice(
-                    product,
-                    store,
-                    Double.parseDouble(record.get(6)),
-                    record.get(7),
-                    price_date
-            ));
+            String productId = record.get(0);
+            Optional<Product> product = productRepository.findById(productId);
+            if (product.isPresent()) {
+                store.getPrices().add(new ProductPrice(
+                        product.get(),
+                        store,
+                        Double.parseDouble(record.get(6)),
+                        record.get(7),
+                        price_date
+                ));
+            }
         }
         storeRepository.save(store);
     }
@@ -117,9 +133,9 @@ public class CsvParser implements CommandLineRunner {
     private void addDiscounts(String storeName, List<List<String>> records) {
         Store store = storeRepository.findByName(storeName);
         for (List<String> record : records) {
-            String productId = record.get(0);
-            Product product = productRepository.findById(productId);
-            if (product == null) {
+            String productId = record.getFirst();
+            Optional<Product> product = productRepository.findById(productId);
+            if (product.isEmpty()) {
                 continue;
             }
             LocalDate startDate = LocalDate.parse(record.get(6));
@@ -135,7 +151,7 @@ public class CsvParser implements CommandLineRunner {
                 newDiscount.setDiscount(discountPercentage);
             } else {
                 store.getDiscounts().add(new ProductDiscount(
-                        product,
+                        product.get(),
                         store,
                         discountPercentage,
                         startDate,

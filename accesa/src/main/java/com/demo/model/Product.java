@@ -98,4 +98,16 @@ public class Product {
     public void setDiscounts(List<ProductDiscount> discounts) {
         this.discounts = discounts;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "package_unit='" + package_unit + '\'' +
+                ", package_quantity=" + package_quantity +
+                ", brand='" + brand + '\'' +
+                ", category='" + category + '\'' +
+                ", name='" + name + '\'' +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }

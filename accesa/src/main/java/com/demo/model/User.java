@@ -18,7 +18,7 @@ public class User implements UserDetails {
     private String username;
     private String password;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "basket_id")
     private Basket basket;
 
@@ -31,6 +31,7 @@ public class User implements UserDetails {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.basket = new Basket();
     }
 
     public String getId() {
