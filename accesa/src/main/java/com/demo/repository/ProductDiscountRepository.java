@@ -15,4 +15,8 @@ public interface ProductDiscountRepository extends JpaRepository<ProductDiscount
             "WHERE :currentDate BETWEEN pd.startDate AND pd.endDate " +
             "ORDER BY pd.discount DESC")
     Page<ProductDiscount> findBestActiveDiscounts(LocalDate currentDate, Pageable pageable);
+
+    @Query("SELECT pd FROM ProductDiscount pd " +
+            "WHERE pd.startDate IN (:yesterday, :today)")
+    Page<ProductDiscount> findNewDiscounts(LocalDate today, LocalDate yesterday, Pageable pageable);
 }

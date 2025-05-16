@@ -1,6 +1,6 @@
 package com.demo.service.implementations;
 
-import com.demo.dto.BestDiscountDTO;
+import com.demo.dto.DiscountDTO;
 import com.demo.mapper.DiscountMapper;
 import com.demo.model.ProductDiscount;
 import com.demo.model.ProductPrice;
@@ -31,18 +31,36 @@ public class DiscountService implements IDiscountService {
     }
 
     @Override
-    public Page<BestDiscountDTO> getBestDiscounts(int page, int size) {
+    public Page<DiscountDTO> getBestDiscounts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         LocalDate date = LocalDate.of(2025, Month.MAY, 10); // Specific date so there exists available discounts for the demo
         Page<ProductDiscount> bestDiscounts = productDiscountRepository.findBestActiveDiscounts(date, pageable);
         return bestDiscounts.map(
                 discount -> {
-                    ProductPrice originalPrice = productPriceRepository.findTopByProductIdAndStoreIdOrderByDateDesc(
-                            discount.getProduct().getId(),
-                            discount.getStore().getId()
-                    );
-                    return discountMapper.discountToBestDiscountDTO(discount, originalPrice.getPrice());
+                    ProductPrice originalPrice = extractPrice(discount.getProduct().getId(), discount.getStore().getId());
+                    return discountMapper.discountToDTO(discount, originalPrice.getPrice());
                 }
         );
+    }
+
+    @Override
+    public Page<DiscountDTO> getNewestDiscounts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        // Again specific dates just fo the demo
+        LocalDate yesterday = LocalDate.of(2025, Month.MAY, 9);
+        LocalDate today = LocalDate.of(2025, Month.MAY, 10);
+
+        Page<ProductDiscount> newDiscounts = productDiscountRepository.findNewDiscounts(yesterday, today, pageable);
+        return newDiscounts.map(
+                discount -> {
+                    ProductPrice originalPrice = extractPrice(discount.getProduct().getId(), discount.getStore().getId());
+                    return discountMapper.discountToDTO(discount, originalPrice.getPrice());
+                }
+        );
+    }
+
+    private ProductPrice extractPrice(String productId, String storeId) {
+        return productPriceRepository.findTopByProductIdAndStoreIdOrderByDateDesc(productId, storeId);
     }
 }

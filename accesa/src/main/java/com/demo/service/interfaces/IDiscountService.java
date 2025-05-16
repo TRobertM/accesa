@@ -1,8 +1,9 @@
 package com.demo.service.interfaces;
 
-import com.demo.dto.BestDiscountDTO;
+import com.demo.dto.DiscountDTO;
 import org.springframework.data.domain.Page;
 
 public interface IDiscountService {
-    Page<BestDiscountDTO> getBestDiscounts(int size, int page);
+    Page<DiscountDTO> getBestDiscounts(int size, int page);
+    Page<DiscountDTO> getNewestDiscounts(int size, int page);
 }

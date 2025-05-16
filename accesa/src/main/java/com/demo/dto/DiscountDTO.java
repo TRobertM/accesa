@@ -2,7 +2,7 @@ package com.demo.dto;
 
 import java.time.LocalDate;
 
-public record BestDiscountDTO(
+public record DiscountDTO(
         String id,
         ProductDTO product,
         StoreDTO store,

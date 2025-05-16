@@ -1,6 +1,6 @@
 package com.demo.mapper;
 
-import com.demo.dto.BestDiscountDTO;
+import com.demo.dto.DiscountDTO;
 import com.demo.model.ProductDiscount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,8 +17,8 @@ public class DiscountMapper {
         this.storeMapper = storeMapper;
     }
 
-    public BestDiscountDTO discountToBestDiscountDTO(ProductDiscount discount, Double originalPrice) {
-       return new BestDiscountDTO(
+    public DiscountDTO discountToDTO(ProductDiscount discount, Double originalPrice) {
+       return new DiscountDTO(
                discount.getId(),
                productMapper.productToDTO(discount.getProduct()),
                storeMapper.storeToDTO(discount.getStore()),

@@ -1,6 +1,6 @@
 package com.demo.controller;
 
-import com.demo.dto.BestDiscountDTO;
+import com.demo.dto.DiscountDTO;
 import com.demo.service.implementations.DiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,9 +23,16 @@ public class DiscountController {
     }
 
     @GetMapping("/best")
-    public ResponseEntity<Page<BestDiscountDTO>> getBestDiscounts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<Page<DiscountDTO>> getBestDiscounts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(discountService.getBestDiscounts(page, size));
+    }
+
+    @GetMapping("/new")
+    public ResponseEntity<Page<DiscountDTO>> getNewDiscounts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(discountService.getNewestDiscounts(page, size));
     }
 }
