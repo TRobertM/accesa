@@ -25,7 +25,7 @@ public class UserValidator {
 
     private void validateNotNull(Object... values) {
         for (Object value : values) {
-            if (value == null) {
+            if (value == null || value == "") {
                 throw new InvalidValueException();
             }
         }
