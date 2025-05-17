@@ -22,7 +22,7 @@ public class ProductPrice {
     private Double price;
     private String currency;
     private LocalDate date;
-    private boolean isActive;
+    private boolean active;
 
     public ProductPrice() {
     }
@@ -33,7 +33,7 @@ public class ProductPrice {
         this.price = price;
         this.currency = currency;
         this.date = date;
-        this.isActive = true;
+        this.active = true;
     }
 
     public String getId() {
@@ -81,11 +81,11 @@ public class ProductPrice {
     }
 
     public boolean isActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(boolean active) {
-        isActive = active;
+        this.active = active;
     }
 
     @Override
@@ -98,5 +98,18 @@ public class ProductPrice {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "ProductPrice{" +
+                "id='" + id + '\'' +
+                ", product=" + product +
+                ", store=" + store +
+                ", price=" + price +
+                ", currency='" + currency + '\'' +
+                ", date=" + date +
+                ", isActive=" + active +
+                '}';
     }
 }

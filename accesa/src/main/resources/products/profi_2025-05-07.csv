@@ -1,0 +1,5 @@
+product_id;product_name;product_category;brand;package_quantity;package_unit;price;currency
+P005;Chips cu sare;gustari;Pringles;1;cutie;15.00;RON
+P006;Chips cu barbeque;gustari;Pringles;1;cutie;15.00;RON
+P007;Suc mar verde;bauturi;Tymbark;2;l;11.00;RON
+P004;Piper;condimente;Fuchs;1;pachet;7.00;RON

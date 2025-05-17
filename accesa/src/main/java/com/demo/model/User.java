@@ -97,6 +97,11 @@ public class User implements UserDetails {
         this.shoppingLists = shoppingLists;
     }
 
+    public void addShoppingList(ShoppingList shoppingList) {
+        this.shoppingLists.add(shoppingList);
+        shoppingList.setUser(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

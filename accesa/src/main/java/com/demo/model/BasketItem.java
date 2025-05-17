@@ -52,4 +52,12 @@ public class BasketItem {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "BasketItem{" +
+                "quantity=" + quantity +
+                ", product=" + product +
+                '}';
+    }
 }

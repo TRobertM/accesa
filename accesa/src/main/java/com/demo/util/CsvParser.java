@@ -7,6 +7,8 @@ import com.demo.repository.StoreRepository;
 import com.demo.repository.UserRepository;
 import com.demo.service.implementations.UserService;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -21,17 +23,21 @@ import java.util.*;
 
 @Component
 public class CsvParser implements CommandLineRunner {
+    private static final Logger log = LoggerFactory.getLogger(CsvParser.class);
     private final ProductRepository productRepository;
     private final StoreRepository storeRepository;
     private final List<String> price_files = List.of(
-            "products/kaufland_2025-05-01.csv", "products/kaufland_2025-05-08.csv",
-            "products/lidl_2025-05-01.csv", "products/lidl_2025-05-01.csv",
-            "products/profi_2025-05-01.csv", "products/profi_2025-05-08.csv"
+//            "products/kaufland_2025-05-01.csv", "products/kaufland_2025-05-08.csv",
+//            "products/lidl_2025-05-01.csv", "products/lidl_2025-05-08.csv",
+//            "products/profi_2025-05-01.csv", "products/profi_2025-05-08.csv",
+            "products/kaufland_2025-05-05.csv", "products/kaufland_2025-05-07.csv", "products/lidl_2025-05-07.csv", "products/profi_2025-05-07.csv"
     );
     private final List<String> discount_files = List.of(
-            "discounts/kaufland_2025-05-01.csv", "discounts/kaufland_2025-05-08.csv",
-            "discounts/lidl_2025-05-01.csv", "discounts/lidl_2025-05-08.csv",
-            "discounts/profi_2025-05-01.csv", "discounts/profi_2025-05-08.csv"
+//            "discounts/kaufland_2025-05-01.csv", "discounts/kaufland_2025-05-08.csv",
+//            "discounts/lidl_2025-05-01.csv", "discounts/lidl_2025-05-08.csv",
+//            "discounts/profi_2025-05-01.csv", "discounts/profi_2025-05-08.csv"
+            "discounts/kaufland_2025-05-07.csv"
+
     );
     private final String DELIMITER = ";";
     private final UserService userService;
@@ -51,7 +57,7 @@ public class CsvParser implements CommandLineRunner {
         addStores();
         parsePrices(price_files);
         parseDiscounts(discount_files);
-        List<Product> products = productRepository.findTop10ByOrderByIdAsc();
+        List<Product> products = productRepository.findTop3ByOrderByIdAsc();
         userService.registerUser(new UsernamePasswordDTO("User1", "password1"));
         Optional<User> user = userRepository.findByUsername("User1");
         if (user.isPresent()) {

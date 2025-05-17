@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String> {
     Optional<Product> findById(String id);
-    List<Product> findTop10ByOrderByIdAsc();
+    List<Product> findTop3ByOrderByIdAsc();
 }
