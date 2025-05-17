@@ -32,6 +32,7 @@ public class User implements UserDetails {
         this.username = username;
         this.password = password;
         this.basket = new Basket();
+        this.basket.setUser(this);
     }
 
     public String getId() {

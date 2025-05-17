@@ -16,6 +16,9 @@ public class Basket {
     @OneToMany(mappedBy = "basket", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BasketItem> basketItems = new ArrayList<>();
 
+    @OneToOne
+    private User user;
+
     public Basket() {
     }
 
@@ -41,4 +44,11 @@ public class Basket {
         item.setBasket(null);
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
