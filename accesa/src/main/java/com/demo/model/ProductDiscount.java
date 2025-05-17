@@ -22,6 +22,7 @@ public class ProductDiscount {
     private Integer discount;
     private LocalDate startDate;
     private LocalDate endDate;
+    private boolean active;
 
     public ProductDiscount() {
     }
@@ -32,6 +33,7 @@ public class ProductDiscount {
         this.discount = discount;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.active = true;
     }
 
     public String getId() {
@@ -76,6 +78,14 @@ public class ProductDiscount {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override

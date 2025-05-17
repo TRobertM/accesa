@@ -22,6 +22,7 @@ public class ProductPrice {
     private Double price;
     private String currency;
     private LocalDate date;
+    private boolean isActive;
 
     public ProductPrice() {
     }
@@ -32,6 +33,7 @@ public class ProductPrice {
         this.price = price;
         this.currency = currency;
         this.date = date;
+        this.isActive = true;
     }
 
     public String getId() {
@@ -76,6 +78,14 @@ public class ProductPrice {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     @Override

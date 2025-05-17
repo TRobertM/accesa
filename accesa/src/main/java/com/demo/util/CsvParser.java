@@ -118,6 +118,7 @@ public class CsvParser implements CommandLineRunner {
             String productId = record.get(0);
             Optional<Product> product = productRepository.findById(productId);
             if (product.isPresent()) {
+                deactivatePreviousPrices(store, product.get());
                 store.getPrices().add(new ProductPrice(
                         product.get(),
                         store,
@@ -128,6 +129,14 @@ public class CsvParser implements CommandLineRunner {
             }
         }
         storeRepository.save(store);
+    }
+
+    private void deactivatePreviousPrices(Store store, Product product) {
+        List<ProductPrice> activePrices = store.getPrices().stream()
+                .filter(price -> price.getProduct().equals(product))
+                .filter(ProductPrice::isActive)
+                .toList();
+        activePrices.forEach(price -> price.setActive(false));
     }
 
     private void addDiscounts(String storeName, List<List<String>> records) {
@@ -141,25 +150,24 @@ public class CsvParser implements CommandLineRunner {
             LocalDate startDate = LocalDate.parse(record.get(6));
             LocalDate endDate = LocalDate.parse(record.get(7));
             int discountPercentage = Integer.parseInt(record.get(8));
-            Optional<ProductDiscount> existingDiscount = store.getDiscounts().stream()
-                            .filter(discount -> discount.getProduct().getId().equals(productId))
-                            .findFirst();
-            if (existingDiscount.isPresent()) {
-                ProductDiscount newDiscount = existingDiscount.get();
-                newDiscount.setStartDate(startDate);
-                newDiscount.setEndDate(endDate);
-                newDiscount.setDiscount(discountPercentage);
-            } else {
-                store.getDiscounts().add(new ProductDiscount(
-                        product.get(),
-                        store,
-                        discountPercentage,
-                        startDate,
-                        endDate
-                ));
-            }
+            deactivateExistingDiscounts(store, product.get());
+            ProductDiscount newDiscount = new ProductDiscount(
+                    product.get(),
+                    store,
+                    discountPercentage,
+                    startDate,
+                    endDate
+            );
+            store.getDiscounts().add(newDiscount);
         }
         storeRepository.save(store);
+    }
+
+    private void deactivateExistingDiscounts(Store store, Product product) {
+        store.getDiscounts().stream()
+                .filter(d -> d.getProduct().equals(product))
+                .filter(ProductDiscount::isActive)
+                .forEach(d -> d.setActive(false));
     }
 
     private void addProduct(List<String> product) {
