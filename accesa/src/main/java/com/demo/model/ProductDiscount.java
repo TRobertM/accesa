@@ -89,6 +89,19 @@ public class ProductDiscount {
     }
 
     @Override
+    public String toString() {
+        return "ProductDiscount{" +
+                "active=" + active +
+                ", endDate=" + endDate +
+                ", startDate=" + startDate +
+                ", discount=" + discount +
+                ", store=" + store +
+                ", product=" + product +
+                ", id='" + id + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ProductDiscount that = (ProductDiscount) o;

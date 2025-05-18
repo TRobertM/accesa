@@ -27,17 +27,16 @@ public class CsvParser implements CommandLineRunner {
     private final ProductRepository productRepository;
     private final StoreRepository storeRepository;
     private final List<String> price_files = List.of(
-//            "products/kaufland_2025-05-01.csv", "products/kaufland_2025-05-08.csv",
-//            "products/lidl_2025-05-01.csv", "products/lidl_2025-05-08.csv",
-//            "products/profi_2025-05-01.csv", "products/profi_2025-05-08.csv",
-            "products/kaufland_2025-05-05.csv", "products/kaufland_2025-05-07.csv", "products/lidl_2025-05-07.csv", "products/profi_2025-05-07.csv"
+            "products/kaufland_2025-05-01.csv", "products/kaufland_2025-05-08.csv",
+            "products/lidl_2025-05-01.csv", "products/lidl_2025-05-08.csv",
+            "products/profi_2025-05-01.csv", "products/profi_2025-05-08.csv"
+//            "products/kaufland_2025-05-05.csv", "products/kaufland_2025-05-15.csv", "products/lidl_2025-05-07.csv", "products/profi_2025-05-07.csv"
     );
     private final List<String> discount_files = List.of(
-//            "discounts/kaufland_2025-05-01.csv", "discounts/kaufland_2025-05-08.csv",
-//            "discounts/lidl_2025-05-01.csv", "discounts/lidl_2025-05-08.csv",
-//            "discounts/profi_2025-05-01.csv", "discounts/profi_2025-05-08.csv"
-            "discounts/kaufland_2025-05-07.csv"
-
+            "discounts/kaufland_2025-05-01.csv", "discounts/kaufland_2025-05-08.csv",
+            "discounts/lidl_2025-05-01.csv", "discounts/lidl_2025-05-08.csv",
+            "discounts/profi_2025-05-01.csv", "discounts/profi_2025-05-08.csv"
+//            "discounts/kaufland_2025-05-07.csv"
     );
     private final String DELIMITER = ";";
     private final UserService userService;
@@ -156,7 +155,7 @@ public class CsvParser implements CommandLineRunner {
             LocalDate startDate = LocalDate.parse(record.get(6));
             LocalDate endDate = LocalDate.parse(record.get(7));
             int discountPercentage = Integer.parseInt(record.get(8));
-            deactivateExistingDiscounts(store, product.get());
+            deactivateExistingDiscounts(store, product.get(), startDate);
             ProductDiscount newDiscount = new ProductDiscount(
                     product.get(),
                     store,
@@ -169,11 +168,16 @@ public class CsvParser implements CommandLineRunner {
         storeRepository.save(store);
     }
 
-    private void deactivateExistingDiscounts(Store store, Product product) {
+    private void deactivateExistingDiscounts(Store store, Product product, LocalDate newDiscountStartDate) {
         store.getDiscounts().stream()
                 .filter(d -> d.getProduct().equals(product))
                 .filter(ProductDiscount::isActive)
-                .forEach(d -> d.setActive(false));
+                .forEach(d -> {
+                    if (d.getEndDate().isAfter(newDiscountStartDate)) {
+                        d.setEndDate(newDiscountStartDate.minusDays(1));
+                    }
+                    d.setActive(false);
+                });
     }
 
     private void addProduct(List<String> product) {
