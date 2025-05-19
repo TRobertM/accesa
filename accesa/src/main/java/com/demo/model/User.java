@@ -25,6 +25,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ShoppingList> shoppingLists = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PriceAlert> priceAlerts = new ArrayList<>();
+
     public User() {
     }
 
@@ -100,6 +103,23 @@ public class User implements UserDetails {
     public void addShoppingList(ShoppingList shoppingList) {
         this.shoppingLists.add(shoppingList);
         shoppingList.setUser(this);
+    }
+
+    public List<PriceAlert> getPriceAlerts() {
+        return priceAlerts;
+    }
+
+    public void setPriceAlerts(List<PriceAlert> priceAlerts) {
+        this.priceAlerts = priceAlerts;
+    }
+
+    public void addPriceAlert(PriceAlert priceAlert) {
+        this.priceAlerts.add(priceAlert);
+        priceAlert.setUser(this);
+    }
+
+    public void removePriceAlert(PriceAlert priceAlert) {
+        this.priceAlerts.remove(priceAlert);
     }
 
     @Override

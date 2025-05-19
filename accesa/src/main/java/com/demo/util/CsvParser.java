@@ -64,6 +64,7 @@ public class CsvParser implements CommandLineRunner {
                 BasketItem bi = new BasketItem(product, 2);
                 user.get().getBasket().addItem(bi);
             }
+            user.get().addPriceAlert(new PriceAlert(products.getFirst(), user.get(), 10.00));
         }
     }
 

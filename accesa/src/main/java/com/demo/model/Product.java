@@ -23,6 +23,9 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProductDiscount> discounts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PriceAlert> priceAlerts = new ArrayList<>();
+
     public Product() {
     }
 
@@ -97,6 +100,23 @@ public class Product {
 
     public void setDiscounts(List<ProductDiscount> discounts) {
         this.discounts = discounts;
+    }
+
+    public List<PriceAlert> getPriceAlerts() {
+        return priceAlerts;
+    }
+
+    public void setPriceAlerts(List<PriceAlert> priceAlerts) {
+        this.priceAlerts = priceAlerts;
+    }
+
+    public void addPriceAlert(PriceAlert priceAlert) {
+        this.priceAlerts.add(priceAlert);
+        priceAlert.setProduct(this);
+    }
+
+    public void removePriceAlert(PriceAlert priceAlert) {
+        this.priceAlerts.remove(priceAlert);
     }
 
     @Override

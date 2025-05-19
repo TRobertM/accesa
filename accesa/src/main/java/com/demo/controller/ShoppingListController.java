@@ -1,17 +1,14 @@
 package com.demo.controller;
 
-import com.demo.dto.ShoppingListDTO;
 import com.demo.service.implementations.ShoppingListService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/shopping")
+@RequestMapping("/api/shoppinglists")
 public class ShoppingListController {
 
     private final ShoppingListService shoppingListService;
@@ -20,10 +17,10 @@ public class ShoppingListController {
         this.shoppingListService = shoppingListService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<ShoppingListDTO>> getShoppingLists() {
+    @PostMapping("/optimize")
+    public ResponseEntity<String> optimizeBasket() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(shoppingListService.getShoppingLists());
+                .body(shoppingListService.optimizeBasket());
     }
 }
