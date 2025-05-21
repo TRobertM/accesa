@@ -22,4 +22,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> usernameAlreadyExistsException(UsernameAlreadyExistsException error) {
         return new ResponseEntity<>(error.getMessage(), HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(InvalidPackageUnitException.class)
+    public ResponseEntity<String> invalidPackageUnitException(InvalidPackageUnitException error) {
+        return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

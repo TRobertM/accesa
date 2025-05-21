@@ -1,5 +1,5 @@
 product_id;product_name;product_category;brand;package_quantity;package_unit;price;currency
-P001;Chips cu sare;gustari;Lays;1;punga;7.50;RON
-P002;Chips cu paprika;gustari;Lays;1;punga;10.00;RON
+P001;Chips cu sare;gustari;Lays;1;buc;7.50;RON
+P002;Chips cu paprika;gustari;Lays;1;buc;10.00;RON
 P003;Corn cu ciocolata;gustari;7 Days;1;buc;4.50;RON
-P004;Piper;condimente;Fuchs;1;pachet;7.00;RON
+P004;Piper;condimente;Fuchs;100;mg;7.00;RON

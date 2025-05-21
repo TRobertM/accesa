@@ -12,6 +12,7 @@ import java.util.List;
 public interface ProductPriceRepository extends JpaRepository<ProductPrice, String> {
     ProductPrice findTopByProductIdAndStoreIdOrderByDateDesc(String productId, String storeId);
     List<ProductPrice> findAllByProductAndActiveTrue(Product product);
+    List<ProductPrice> findAllByProductIdAndActiveTrue(String productId);
 
     @Query("SELECT pp FROM ProductPrice pp WHERE " +
             "(:productId IS NULL OR pp.product.id = :productId) AND " +

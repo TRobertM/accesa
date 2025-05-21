@@ -29,4 +29,5 @@ public interface ProductDiscountRepository extends JpaRepository<ProductDiscount
             "(:brand IS NULL OR pd.product.brand = :brand) " +
             "ORDER BY pd.product.id, pd.store.id DESC")
     List<ProductDiscount> findPriceHistory(String productId, String storeId, String category, String brand);
+    List<ProductDiscount> findByProductIdAndActiveTrue(String productId);
 }

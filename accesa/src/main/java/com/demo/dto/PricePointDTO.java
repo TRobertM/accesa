@@ -4,12 +4,12 @@ import java.time.LocalDate;
 
 public record PricePointDTO(
         LocalDate date,
-        double price,
-        int discountPercentage,
-        double finalPrice,
+        Double price,
+        Integer discountPercentage,
+        Double finalPrice,
         StoreDTO store
 ) {
-    public PricePointDTO(LocalDate date, double price, int discountPercentage, StoreDTO store) {
+    public PricePointDTO(LocalDate date, Double price, Integer discountPercentage, StoreDTO store) {
         this(date, price, discountPercentage, price * (1 - discountPercentage / 100.0), store);
     }
 }

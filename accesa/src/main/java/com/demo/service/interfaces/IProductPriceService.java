@@ -5,6 +5,6 @@ import com.demo.dto.ProductPriceHistoryDTO;
 
 import java.util.List;
 
-public interface IPriceService {
+public interface IProductPriceService {
     List<ProductPriceHistoryDTO> getPriceHistory(PriceHistoryRequestDTO priceHistoryRequestDTO);
 }

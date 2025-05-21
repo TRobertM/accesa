@@ -1,17 +1,42 @@
 package com.demo.service;
 
+import com.demo.exception.InvalidPackageUnitException;
 import com.demo.model.Product;
 import com.demo.model.ProductDiscount;
 import com.demo.model.ProductPrice;
 import com.demo.model.Store;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import static java.util.Map.entry;
 
 @Service
 public class PriceService {
     public record BestPriceResult(Store store, double price, int discount) {}
+
+    private static final Map<String, Double> UNIT_CONVERSION = Map.ofEntries(
+            entry("g", 0.001),
+            entry("kg", 1.0),
+            entry("mg", 0.000001),
+            entry("l", 1.0),
+            entry("ml", 0.001),
+            entry("buc", 1.0),
+            entry("role", 1.0)
+    );
+
+    private static final Map<String, String> UNIT_DISPLAY = Map.ofEntries(
+            entry("g", "kg"),
+            entry("kg", "kg"),
+            entry("mg", "kg"),
+            entry("l", "l"),
+            entry("ml", "l"),
+            entry("buc", "buc"),
+            entry("role", "rola")
+    );
 
     public BestPriceResult findBestPrice(Product product, List<ProductPrice> prices) {
         double lowestPrice = Double.MAX_VALUE;
@@ -39,5 +64,13 @@ public class PriceService {
         }
 
         return new BestPriceResult(bestStore, lowestPrice, bestDiscount);
+    }
+
+    public Pair<Double, String> calculatePricePerUnit(Double price, Double quantity, String unit) {
+        Double conversionFactor = UNIT_CONVERSION.get(unit.toLowerCase());
+        if (conversionFactor == null) {
+            throw new InvalidPackageUnitException();
+        }
+        return Pair.of(price / (conversionFactor * quantity), UNIT_DISPLAY.get(unit.toLowerCase()));
     }
 }

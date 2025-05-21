@@ -11,7 +11,7 @@ import com.demo.model.ProductPrice;
 import com.demo.model.Store;
 import com.demo.repository.ProductDiscountRepository;
 import com.demo.repository.ProductPriceRepository;
-import com.demo.service.interfaces.IPriceService;
+import com.demo.service.interfaces.IProductPriceService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ import java.time.Month;
 import java.util.*;
 
 @Service
-public class ProductPriceService implements IPriceService {
+public class ProductPriceService implements IProductPriceService {
 
     private final ProductPriceRepository productPriceRepository;
     private final ProductDiscountRepository productDiscountRepository;
