@@ -7,7 +7,7 @@ import com.demo.mapper.UserMapper;
 import com.demo.model.User;
 import com.demo.repository.UserRepository;
 import com.demo.service.JWTService;
-import com.demo.service.interfaces.IUserService;
+import com.demo.service.interfaces.IAuthService;
 import com.demo.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService implements IUserService {
+public class AuthService implements IAuthService {
 
     private final UserValidator userValidator;
     private final UserMapper userMapper;
@@ -24,7 +24,7 @@ public class UserService implements IUserService {
     private final JWTService jwtService;
 
     @Autowired
-    public UserService(UserValidator userValidator, UserMapper userMapper, UserRepository userRepository,
+    public AuthService(UserValidator userValidator, UserMapper userMapper, UserRepository userRepository,
                        AuthenticationManager authenticationManager, JWTService jwtService) {
         this.userValidator = userValidator;
         this.userMapper = userMapper;

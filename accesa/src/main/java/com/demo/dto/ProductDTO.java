@@ -5,6 +5,6 @@ public record ProductDTO(
         String name,
         String category,
         String brand,
-        Double package_quantity,
-        String package_unit
+        Double packageQuantity,
+        String packageUnit
 ) {}

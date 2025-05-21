@@ -5,7 +5,7 @@ import com.demo.model.*;
 import com.demo.repository.ProductRepository;
 import com.demo.repository.StoreRepository;
 import com.demo.repository.UserRepository;
-import com.demo.service.implementations.UserService;
+import com.demo.service.implementations.AuthService;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,11 +39,11 @@ public class CsvParser implements CommandLineRunner {
 //            "discounts/kaufland_2025-05-07.csv"
     );
     private final String DELIMITER = ";";
-    private final UserService userService;
+    private final AuthService userService;
     private final UserRepository userRepository;
 
     @Autowired
-    public CsvParser(StoreRepository storeRepository, ProductRepository productRepository, UserService userService, UserRepository userRepository) {
+    public CsvParser(StoreRepository storeRepository, ProductRepository productRepository, AuthService userService, UserRepository userRepository) {
         this.storeRepository = storeRepository;
         this.productRepository = productRepository;
         this.userService = userService;

@@ -14,8 +14,8 @@ public class Product {
     private String name;
     private String category;
     private String brand;
-    private Double package_quantity;
-    private String package_unit;
+    private Double packageQuantity;
+    private String packageUnit;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProductPrice> prices = new ArrayList<>();
@@ -29,13 +29,13 @@ public class Product {
     public Product() {
     }
 
-    public Product(String id, String name, String category, String brand, Double package_quantity, String package_unit) {
+    public Product(String id, String name, String category, String brand, Double packageQuantity, String packageUnit) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.brand = brand;
-        this.package_quantity = package_quantity;
-        this.package_unit = package_unit;
+        this.packageQuantity = packageQuantity;
+        this.packageUnit = packageUnit;
     }
 
     public String getId() {
@@ -70,20 +70,20 @@ public class Product {
         this.brand = brand;
     }
 
-    public Double getPackage_quantity() {
-        return package_quantity;
+    public Double getPackageQuantity() {
+        return packageQuantity;
     }
 
-    public void setPackage_quantity(Double package_quantity) {
-        this.package_quantity = package_quantity;
+    public void setPackageQuantity(Double package_quantity) {
+        this.packageQuantity = package_quantity;
     }
 
-    public String getPackage_unit() {
-        return package_unit;
+    public String getPackageUnit() {
+        return packageUnit;
     }
 
-    public void setPackage_unit(String package_unit) {
-        this.package_unit = package_unit;
+    public void setPackageUnit(String package_unit) {
+        this.packageUnit = package_unit;
     }
 
     public List<ProductPrice> getPrices() {
@@ -122,8 +122,8 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" +
-                "package_unit='" + package_unit + '\'' +
-                ", package_quantity=" + package_quantity +
+                "package_unit='" + packageUnit + '\'' +
+                ", package_quantity=" + packageQuantity +
                 ", brand='" + brand + '\'' +
                 ", category='" + category + '\'' +
                 ", name='" + name + '\'' +

@@ -48,6 +48,6 @@ public class PriceAlertService implements IPriceAlertService {
         User user = userRepository.findById(securityUtil.getUserId()).orElseThrow(UserDoesNotExistException::new);
         PriceAlert priceAlert = new PriceAlert(product, user, createPriceAlertDTO.wantedPrice());
         user.addPriceAlert(priceAlert);
-        return priceAlertMapper.priceAlertToDTO(priceAlert);
+        return priceAlertMapper.priceAlertToDTO(priceAlertRepository.save(priceAlert));
     }
 }

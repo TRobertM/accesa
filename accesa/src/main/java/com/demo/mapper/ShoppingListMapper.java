@@ -15,15 +15,20 @@ public class ShoppingListMapper {
         this.productMapper = productMapper;
     }
 
-    public ShoppingListDTO toShoppingListDTO(ShoppingList shoppingList) {
+    public ShoppingListDTO shoppingListToDTO(ShoppingList shoppingList) {
         return new ShoppingListDTO(
                 shoppingList.getId(),
                 shoppingList.getName(),
                 shoppingList.getItems().stream().map(this::shoppingListItemToDTO).toList(),
-                shoppingList.getItems().stream().mapToDouble(item -> item.getPrice() * item.getQuantity()).sum(),
+                shoppingList.getItems().stream().mapToDouble(this::calculateItemTotal).sum(),
                 shoppingList.getCreatedAt()
         );
     }
+
+    private double calculateItemTotal(ShoppingListItem item) {
+        return item.getPrice() * item.getQuantity();
+    }
+
 
     private ShoppingListItemDTO shoppingListItemToDTO(ShoppingListItem shoppingListItem) {
         return new ShoppingListItemDTO(

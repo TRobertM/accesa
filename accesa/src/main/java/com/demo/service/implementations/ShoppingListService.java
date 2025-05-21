@@ -59,7 +59,7 @@ public class ShoppingListService implements IShoppingListService {
 
     public List<ShoppingListDTO> getShoppingLists() {
         User user = userRepository.findById(securityUtil.getUserId()).orElseThrow(UserDoesNotExistException::new);
-        return user.getShoppingLists().stream().map(shoppingListMapper::toShoppingListDTO).collect(Collectors.toList());
+        return user.getShoppingLists().stream().map(shoppingListMapper::shoppingListToDTO).collect(Collectors.toList());
     }
 
     private ShoppingListItem createShoppingListItem(Product product, int quantity, double price, int discount) {
@@ -71,9 +71,7 @@ public class ShoppingListService implements IShoppingListService {
         return item;
     }
 
-    private List<ShoppingList> createShoppingLists(User user, Map<Store, List<ShoppingListItem>> storeItemsMap) {
-        List<ShoppingList> shoppingLists = new ArrayList<>();
-
+    private void createShoppingLists(User user, Map<Store, List<ShoppingListItem>> storeItemsMap) {
         for (Map.Entry<Store, List<ShoppingListItem>> entry : storeItemsMap.entrySet()) {
             Store store = entry.getKey();
             List<ShoppingListItem> items = entry.getValue();
@@ -86,10 +84,6 @@ public class ShoppingListService implements IShoppingListService {
 
             items.forEach(item -> item.setShoppingList(shoppingList));
             shoppingList.setItems(items);
-
-            shoppingLists.add(shoppingList);
         }
-
-        return shoppingLists;
     }
 }

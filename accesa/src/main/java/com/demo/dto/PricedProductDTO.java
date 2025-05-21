@@ -1,7 +1,7 @@
 package com.demo.dto;
 
 public record PricedProductDTO(
-        StoreDTO storeDTO,
+        StoreDTO store,
         ProductDTO product,
         Double price,
         Integer discount,

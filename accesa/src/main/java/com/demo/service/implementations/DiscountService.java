@@ -1,7 +1,6 @@
 package com.demo.service.implementations;
 
 import com.demo.dto.DiscountDTO;
-import com.demo.dto.PriceHistoryRequestDTO;
 import com.demo.mapper.DiscountMapper;
 import com.demo.model.ProductDiscount;
 import com.demo.model.ProductPrice;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.List;
 
 @Service
 public class DiscountService implements IDiscountService {
@@ -59,16 +57,6 @@ public class DiscountService implements IDiscountService {
                     ProductPrice originalPrice = extractPrice(discount.getProduct().getId(), discount.getStore().getId());
                     return discountMapper.discountToDTO(discount, originalPrice.getPrice());
                 }
-        );
-    }
-
-    @Override
-    public List<ProductDiscount> getDiscountHistory(PriceHistoryRequestDTO priceHistoryRequestDTO) {
-        return productDiscountRepository.findPriceHistory(
-                priceHistoryRequestDTO.productId().isPresent() ? priceHistoryRequestDTO.productId().get() : null,
-                priceHistoryRequestDTO.storeId().isPresent() ? priceHistoryRequestDTO.storeId().get() : null,
-                priceHistoryRequestDTO.category().isPresent() ? priceHistoryRequestDTO.category().get() : null,
-                priceHistoryRequestDTO.brand().isPresent() ? priceHistoryRequestDTO.brand().get() : null
         );
     }
 

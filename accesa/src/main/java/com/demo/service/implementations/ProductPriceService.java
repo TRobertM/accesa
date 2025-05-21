@@ -35,7 +35,6 @@ public class ProductPriceService implements IProductPriceService {
 
     public List<ProductPriceHistoryDTO> getPriceHistory(PriceHistoryRequestDTO request) {
         int daysBetween = request.daysBetweenPoints().orElse(7);
-        LocalDate startDate;
         LocalDate endDate = LocalDate.of(2025, Month.MAY, 11);
         List<ProductPrice> prices = productPriceRepository.findPriceHistory(
                 request.productId().orElse(null),
@@ -52,19 +51,23 @@ public class ProductPriceService implements IProductPriceService {
         List<Product> products = prices.stream().map(ProductPrice::getProduct).distinct().toList();
         List<ProductPriceHistoryDTO> result = new ArrayList<>();
         for (Product product : products) {
+
             List<PricePointDTO> allPricePoints = new ArrayList<>();
             List<Store> stores = prices.stream()
                     .filter(price -> price.getProduct().equals(product))
                     .map(ProductPrice::getStore)
                     .distinct()
                     .toList();
+
             for (Store store : stores) {
-                startDate = request.startDate();
+
+                LocalDate startDate = request.startDate();
                 List<ProductPrice> availablePrices = store.getPrices().stream()
                         .filter(price -> price.getProduct().equals(product))
                         .toList();
 
                 while (startDate.isBefore(endDate)) {
+
                     final LocalDate filterDate = startDate;
                     Optional<ProductPrice> latestPrice = availablePrices.stream()
                             .filter(price -> price.getDate().isBefore(filterDate) || price.getDate().equals(filterDate))
@@ -72,11 +75,12 @@ public class ProductPriceService implements IProductPriceService {
 
                     if (latestPrice.isPresent()) {
                         int discount = 0;
-                        final LocalDate discountStart = startDate;
-                        final LocalDate discountEnd = discountStart.plusDays(daysBetween);
+                        final LocalDate discountFilterSearchStart = startDate;
+                        final LocalDate discountFilterSearchEnd = discountFilterSearchStart.plusDays(daysBetween);
                         Optional<ProductDiscount> latestDiscount = discounts.stream()
                                 .filter(d -> d.getStore().equals(store))
-                                .filter(d -> !d.getEndDate().isBefore(discountStart) && !d.getStartDate().isAfter(discountEnd))
+                                .filter(d -> d.getProduct().equals(product))
+                                .filter(d -> !d.getEndDate().isBefore(discountFilterSearchStart) && !d.getStartDate().isAfter(discountFilterSearchEnd))
                                 .findFirst();
                         if (latestDiscount.isPresent()) {
                             discount = latestDiscount.get().getDiscount();

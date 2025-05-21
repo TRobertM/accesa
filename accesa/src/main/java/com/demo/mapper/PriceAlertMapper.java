@@ -22,7 +22,7 @@ public class PriceAlertMapper {
                 priceAlert.getId(),
                 productMapper.productToDTO(priceAlert.getProduct()),
                 userMapper.toUserDTO(priceAlert.getUser()),
-                priceAlert.getWanted_price()
+                priceAlert.getWantedPrice()
         );
     }
 }

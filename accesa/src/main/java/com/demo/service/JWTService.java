@@ -18,6 +18,7 @@ public class JWTService {
 
     private static final String SECRET = "uN8Avf4B3eRcRj3KcYmO8zW7mBvQcT9pYfLpL9qC2gE=";
     private static final long EXPIRATION = 1000 * 60 * 60;
+    private static final String ISSUER = "ACCESA";
 
     private SecretKey getSignKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET);
@@ -29,7 +30,7 @@ public class JWTService {
                 .claim("userId", user.getId())
                 .claim("jti", UUID.randomUUID().toString())
                 .subject(user.getUsername())
-                .issuer("ACCESA")
+                .issuer(ISSUER)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .signWith(getSignKey())

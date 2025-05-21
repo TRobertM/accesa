@@ -2,6 +2,7 @@ package com.demo.controller;
 
 import com.demo.dto.PricedProductDTO;
 import com.demo.service.implementations.ProductService;
+import com.demo.service.interfaces.IProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ import java.util.List;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private final ProductService productService;
+    private final IProductService productService;
 
     public ProductController(ProductService productService) {
         this.productService = productService;

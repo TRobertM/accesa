@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers( "/api/user/login", "/api/user/register", "/h2-console/**").permitAll()
+                        .requestMatchers( "/login", "/register", "/h2-console/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

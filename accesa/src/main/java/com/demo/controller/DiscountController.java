@@ -2,6 +2,7 @@ package com.demo.controller;
 
 import com.demo.dto.DiscountDTO;
 import com.demo.service.implementations.DiscountService;
+import com.demo.service.interfaces.IDiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/discounts")
 public class DiscountController {
 
-    private final DiscountService discountService;
+    private final IDiscountService discountService;
 
     @Autowired
     public DiscountController(DiscountService discountService) {

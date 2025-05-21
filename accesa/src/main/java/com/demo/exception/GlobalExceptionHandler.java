@@ -15,12 +15,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserDoesNotExistException.class)
     public ResponseEntity<String> userDoesNotExistException(UserDoesNotExistException error) {
-        return new ResponseEntity<>(error.getMessage(), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(error.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<String> usernameAlreadyExistsException(UsernameAlreadyExistsException error) {
         return new ResponseEntity<>(error.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ProductDoesNotExistException.class)
+    public ResponseEntity<String> productDoesNotExistException(ProductDoesNotExistException error) {
+        return new ResponseEntity<>(error.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(InvalidPackageUnitException.class)

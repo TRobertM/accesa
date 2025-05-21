@@ -24,8 +24,8 @@ public class ProductMapper {
                 product.getName(),
                 product.getCategory(),
                 product.getBrand(),
-                product.getPackage_quantity(),
-                product.getPackage_unit()
+                product.getPackageQuantity(),
+                product.getPackageUnit()
         );
     }
 
@@ -33,8 +33,8 @@ public class ProductMapper {
         Double discountedPrice = product.getPrice() - (product.getPrice() * discount / 100);
         Pair<Double, String> pricePerUnitAndUnit = priceService.calculatePricePerUnit(
                 discountedPrice,
-                product.getProduct().getPackage_quantity(),
-                product.getProduct().getPackage_unit()
+                product.getProduct().getPackageQuantity(),
+                product.getProduct().getPackageUnit()
         );
         return new PricedProductDTO(
                 storeMapper.storeToDTO(product.getStore()),

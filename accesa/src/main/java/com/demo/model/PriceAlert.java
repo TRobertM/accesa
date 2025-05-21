@@ -18,15 +18,15 @@ public class PriceAlert {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private Double wanted_price;
+    private Double wantedPrice;
 
     public PriceAlert() {
     }
 
-    public PriceAlert(Product product, User user, Double wanted_price) {
+    public PriceAlert(Product product, User user, Double wantedPrice) {
         this.product = product;
         this.user = user;
-        this.wanted_price = wanted_price;
+        this.wantedPrice = wantedPrice;
     }
 
     public Long getId() {
@@ -49,11 +49,11 @@ public class PriceAlert {
         this.user = user;
     }
 
-    public Double getWanted_price() {
-        return wanted_price;
+    public Double getWantedPrice() {
+        return wantedPrice;
     }
 
-    public void setWanted_price(Double wanted_price) {
-        this.wanted_price = wanted_price;
+    public void setWantedPrice(Double wantedPrice) {
+        this.wantedPrice = wantedPrice;
     }
 }
