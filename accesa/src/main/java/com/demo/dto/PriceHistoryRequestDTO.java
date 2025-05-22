@@ -9,5 +9,6 @@ public record PriceHistoryRequestDTO(
         Optional<String> storeId,
         Optional<String> category,
         Optional<String> brand,
-        LocalDate startDate
+        LocalDate startDate,
+        Optional<LocalDate> endDate
 ) {}

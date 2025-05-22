@@ -15,7 +15,6 @@ import com.demo.service.interfaces.IProductPriceService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.*;
 
 @Service
@@ -35,7 +34,7 @@ public class ProductPriceService implements IProductPriceService {
 
     public List<ProductPriceHistoryDTO> getPriceHistory(PriceHistoryRequestDTO request) {
         int daysBetween = request.daysBetweenPoints().orElse(7);
-        LocalDate endDate = LocalDate.of(2025, Month.MAY, 11);
+        LocalDate endDate = request.endDate().orElse(LocalDate.now());
         List<ProductPrice> prices = productPriceRepository.findPriceHistory(
                 request.productId().orElse(null),
                 request.storeId().orElse(null),
@@ -70,7 +69,7 @@ public class ProductPriceService implements IProductPriceService {
 
                     final LocalDate filterDate = startDate;
                     Optional<ProductPrice> latestPrice = availablePrices.stream()
-                            .filter(price -> price.getDate().isBefore(filterDate) || price.getDate().equals(filterDate))
+                            .filter(price -> !price.getDate().isAfter(filterDate))
                             .max(Comparator.comparing(ProductPrice::getDate));
 
                     if (latestPrice.isPresent()) {
@@ -86,7 +85,7 @@ public class ProductPriceService implements IProductPriceService {
                             discount = latestDiscount.get().getDiscount();
                         }
                         allPricePoints.add(new PricePointDTO(
-                                startDate,
+                                filterDate,
                                 latestPrice.get().getPrice(),
                                 discount,
                                 storeMapper.storeToDTO(store)

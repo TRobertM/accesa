@@ -29,7 +29,8 @@ public class ProductPriceController {
             @RequestParam(required = false) String storeId,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String brand,
-            @RequestParam LocalDate startDate
+            @RequestParam LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate
     ) {
         PriceHistoryRequestDTO requestDTO = new PriceHistoryRequestDTO(
                 Optional.ofNullable(daysBetweenPoints),
@@ -37,7 +38,8 @@ public class ProductPriceController {
                 Optional.ofNullable(storeId),
                 Optional.ofNullable(category),
                 Optional.ofNullable(brand),
-                startDate
+                startDate,
+                Optional.ofNullable(endDate)
         );
         return ResponseEntity
                 .status(HttpStatus.OK)
