@@ -10,9 +10,11 @@ public class BasketItem {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "basket_id")
     private Basket basket;
 
     @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 
     private Integer quantity;
