@@ -101,6 +101,20 @@ This will return a JWT that needs to be sent with every request besides the ones
 
 Returns the basket of the currently logged in user
 
+#### Add to basket
+
+```
+  POST /api/basket/add
+```
+This endpoint expects a JSON request body:
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `productId`| `string` | **Required**. ID of the product |
+| `quantity` | `Integer` | **Required**. Quantity of said product |
+
+Returns the basket of the currently logged in user
+
 #### Optimize basket
 
 ```
